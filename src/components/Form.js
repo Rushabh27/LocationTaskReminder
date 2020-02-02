@@ -3,6 +3,7 @@ import React,{Component}from 'react';
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import {AsyncStorage} from 'react-native';
+
 import {
   Image,
   Platform,
@@ -103,6 +104,7 @@ export default class Form extends Component {
 		}
         return(
             <View style={styles.container}>
+			
                 <TextInput style={styles.inputbox} value={this.state.email} underlineColorAndroid='rgba(0,0,0,0)' placeholder="Email" selectionColor='#fff' keyboardType="email-address" onChangeText={email => this.setState({email})} ref={(input)=> this.email = input}  placeholderTextColor="#ffffff" />
 						{!!this.state.nameE && (
 					<Text style={{color: 'white'}}>

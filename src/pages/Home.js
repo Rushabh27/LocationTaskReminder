@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import {AsyncStorage} from 'react-native';
 import {
+	Alert,
   Image,
   Platform,
   ScrollView,
@@ -14,7 +15,10 @@ import {
   StatusBar,
   TextInput,
 } from 'react-native';
-
+import Geocoder from 'react-native-geocoding';
+import Geolocation from 'react-native-geolocation-service';
+//import Geocoder from 'react-native-geocoder';
+import * as geolib from 'geolib';
 export default class Home extends Component
 {
 	constructor(props)
@@ -25,11 +29,32 @@ export default class Home extends Component
 			task:'',
 			location:'',
 			loading:false,
+			 latitude: 0,
+            longitude: 0,
+            error: null,
+            Address: null
 		};
 		 
 	}
-	
+		
+		
 	myFunc= () => {
+		/*navigator.geolocation.getCurrentPosition(
+    function(position) {
+		
+		var x=geolib.getDistance(position.coords, {
+                latitude: 23.0225,
+                longitude: 72.5714,
+            });
+		
+        console.log(x/1000,'km');
+    },
+    () => {
+        alert('Position could not be determined.');
+    }
+);
+		*/
+		
 		
 		const {task,location}=this.state;
 			if (task === "") {
@@ -44,10 +69,11 @@ export default class Home extends Component
 			}
 			if(task!=''&&location!='')
 			{
-				console.log(task+location);
+				//		console.log(task+location);
 				this.task.clear();
 				this.location.clear();
 				Actions.map();
+				this.props.navigation.navigate('map',{t:location});
 			}
 	}
 	
@@ -63,7 +89,7 @@ export default class Home extends Component
 	 
     return(
        <View style = { styles.container }>
- 
+	
 	   
 <TextInput style={styles.inputbox} value={this.state.task} underlineColorAndroid='rgba(0,0,0,0)' placeholder="Task" selectionColor='#fff' keyboardType="email-address" onChangeText={task => this.setState({task})} ref={(input)=> this.task = input} placeholderTextColor="#ffffff" />
 						{!!this.state.nameE && (
@@ -92,7 +118,7 @@ const styles=StyleSheet.create({
       flexGrow:1,
       alignItems:'center',
       justifyContent:'center',
-   
+	
     },
 	inputbox:{
 		width:300,
