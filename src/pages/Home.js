@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser';
 import React,{Component}from 'react';
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import { YellowBox } from 'react-native';
 import {AsyncStorage} from 'react-native';
 import {
 	Alert,
@@ -15,16 +16,22 @@ import {
   StatusBar,
   TextInput,
 } from 'react-native';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 //import Geocoder from 'react-native-geocoder';
 import * as geolib from 'geolib';
-export default class Home extends Component
+export default class Home extends React.Component
 {
 	constructor(props)
 	{
+		YellowBox.ignoreWarnings(['Setting a timer']);
+    
 		super(props);
-		this.state={
+	this.state={
+			token:null,
+			notification:null,
 			msg:'error',
 			task:'',
 			location:'',
@@ -36,24 +43,28 @@ export default class Home extends Component
 		};
 		 
 	}
+	
 		
+	myFunc= async() => {
 		
-	myFunc= () => {
-		/*navigator.geolocation.getCurrentPosition(
-    function(position) {
-		
-		var x=geolib.getDistance(position.coords, {
-                latitude: 23.0225,
-                longitude: 72.5714,
-            });
-		
-        console.log(x/1000,'km');
-    },
-    () => {
-        alert('Position could not be determined.');
+		 const { status } =await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+    if (status !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      if (status !== 'granted') {
+        return;
+      }
     }
-);
-		*/
+
+    const token = await Notifications.getExpoPushTokenAsync();
+	console.log(token);
+    this.subscription = Notifications.addListener(this.handleNotification);
+
+    this.setState({
+      token,
+    });
+			
+		 
 		
 		
 		const {task,location}=this.state;
@@ -69,14 +80,30 @@ export default class Home extends Component
 			}
 			if(task!=''&&location!='')
 			{
+				 fetch('https://exp.host/--/api/v2/push/send', {
+      body: JSON.stringify({
+        to: token,
+		title: "REMAINDER",
+        body: "TASK ADDED",
+		 //sdata: { message: `${title} - ${body}` },
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    });
 				//		console.log(task+location);
 				this.task.clear();
 				this.location.clear();
-				Actions.map();
+				//Actions.map();
 				this.props.navigation.navigate('map',{t:location});
 			}
 	}
-	
+	handleNotification = notification => {
+    this.setState({
+      notification,
+    });
+  };
  
  render()
  {
@@ -90,7 +117,7 @@ export default class Home extends Component
     return(
        <View style = { styles.container }>
 	
-	   
+		
 <TextInput style={styles.inputbox} value={this.state.task} underlineColorAndroid='rgba(0,0,0,0)' placeholder="Task" selectionColor='#fff' keyboardType="email-address" onChangeText={task => this.setState({task})} ref={(input)=> this.task = input} placeholderTextColor="#ffffff" />
 						{!!this.state.nameE && (
 					<Text style={{color: 'white'}}>

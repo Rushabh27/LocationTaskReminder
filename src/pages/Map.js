@@ -1,14 +1,17 @@
 import React  from 'react';
-import {Component} from 'react';
+import {PureComponent} from 'react';
 import MapView from 'react-native-maps';
 import Marker from 'react-native-maps';
 import LocationIQ from 'react-native-locationiq';
 import Geolocation from 'react-native-geolocation-service';
 //import Geocoder from 'react-native-geocoder';
 import * as geolib from 'geolib';
-
+import firebase from 'firebase';
+import { YellowBox } from 'react-native';
 import {
   Platform,
+  Permissions,
+  Notifications,
   StyleSheet,
   Text,
   View,
@@ -33,97 +36,111 @@ const styles=StyleSheet.create({
 	  bottomView: {
     width: '100%',
     height: 50,
-    backgroundColor: '#EE5407',
+    backgroundColor: '#455a64',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute', //Here is the trick
     bottom: 0, //Here is the trick
   },
   textStyle: {
-    color: '#fff',
+    color: 'white',
     fontSize: 18,
   }
 });
 
 
-export default class Map extends Component {
+export default class Map extends PureComponent {
+
   constructor(props) {
+    YellowBox.ignoreWarnings(['Setting a timer']);
     super(props);
-	global.dist=0;
 	this.state={
 		latitude: 0,
         longitude: 0,
-		dist:0
+		d:0,
+		listing:[]
 	}
 
   }
   
-
-  render() {
-	  
+ 
+  componentDidMount() {
+ 
 	  LocationIQ.init("4e5b5d3f9046aa"); // use a valid API key
     var lat,lon;
+	//global.dist=0;
     const {navigation}=this.props;
     var t=JSON.stringify(navigation.getParam('t','NO-TASK'));
     //var l=JSON.stringify(navigation.getParam('l','locations'));
-    console.log(t);
+    //console.log(t);
     LocationIQ.search(t)
         .then(json => {
-          console.log("Coordinate");
+          //console.log("Coordinate");
              lat = json[0].lat;
              lon = json[0].lon;
-            
+				var my=firebase.database().ref('location').push();
+				var newdata={
+					latitude:lat,
+					longitude:lon
+				}
+				my.push(newdata);
+			
             console.log(lat, lon);
-			
-			
 		navigator.geolocation.getCurrentPosition(
-    function(position) {
 		
+    function(position) {
+
 		var x=geolib.getDistance(position.coords, {
                 latitude: lat,
                 longitude: lon,
             });
-        console.log(x/1000,'km');
-		global.dist=x/1000+'km';
-		//console.log(this.state.dist);
-    },
+        console.log(x/1000,'km');	
+		global.dist=x/1000;
+		this.setState({d:x/1000});
+    }.bind(this),
     () => {
         alert('Position could not be determined.');
     },
-			//console.log(x/1000,'km'),
-	
-);
-			this.setState({
+);		
+		this.setState({
 				latitude:lat,
 				longitude:lon
-				});
+				//d:global.dist
+				});	
 			
         })
         .catch(error => console.warn(error));
 		
-		
-		
-		
+			
+  }
+
+		render(){
+	
     return (
       <View style={styles.container}>
 	  
 	  <MapView style={styles.map}
+			zoomEnabled={true}
+            showsUserLocation={true}
+			followUserLocation = { true }
           initialRegion={{
             latitude:Number(this.state.latitude),
-            longitude:Number(this.state.longitude)
-            //latitudeDelta:22,
-            //longitudeDelta:22
+            longitude:Number(this.state.longitude),
+            latitudeDelta:150,
+            longitudeDelta:150
           }}>
 		  
 		  <MapView.Marker
           coordinate={{
             latitude:Number(this.state.latitude),
             longitude:Number(this.state.longitude)
-          }}></MapView.Marker>
+          }}>
+	
+		  </MapView.Marker>
 		  
       </MapView>
 	  <View style={styles.bottomView}>
-	  <Text style={styles.txtStyle}>{global.dist}</Text>
+	  <Text style={styles.textStyle}>{this.state.d} Km </Text>
 	  </View>
 	  </View>
     );
