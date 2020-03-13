@@ -96,7 +96,7 @@ export default class Home extends React.Component
 				this.task.clear();
 				this.location.clear();
 				//Actions.map();
-				this.props.navigation.navigate('map',{t:location});
+				this.props.navigation.navigate('map',{t:location,l:task});
 			}
 	}
 	handleNotification = notification => {

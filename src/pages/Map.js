@@ -6,6 +6,7 @@ import LocationIQ from 'react-native-locationiq';
 import Geolocation from 'react-native-geolocation-service';
 //import Geocoder from 'react-native-geocoder';
 import * as geolib from 'geolib';
+//import PolylineDirection from '@react-native-maps/polyline-direction';
 import firebase from 'firebase';
 import { YellowBox } from 'react-native';
 import {
@@ -50,7 +51,6 @@ const styles=StyleSheet.create({
 
 
 export default class Map extends PureComponent {
-
   constructor(props) {
     YellowBox.ignoreWarnings(['Setting a timer']);
     super(props);
@@ -58,7 +58,9 @@ export default class Map extends PureComponent {
 		latitude: 0,
         longitude: 0,
 		d:0,
-		listing:[]
+		listing:[],
+		task:'',
+		loc:''
 	}
 
   }
@@ -71,19 +73,22 @@ export default class Map extends PureComponent {
 	//global.dist=0;
     const {navigation}=this.props;
     var t=JSON.stringify(navigation.getParam('t','NO-TASK'));
-    //var l=JSON.stringify(navigation.getParam('l','locations'));
+    var l=JSON.stringify(navigation.getParam('l','locations'));
     //console.log(t);
     LocationIQ.search(t)
         .then(json => {
           //console.log("Coordinate");
              lat = json[0].lat;
              lon = json[0].lon;
-				var my=firebase.database().ref('location').push();
+			 
 				var newdata={
 					latitude:lat,
-					longitude:lon
+					longitude:lon,
+					task:l,
+					loc:t
 				}
-				my.push(newdata);
+			
+				firebase.database().ref('location').push(newdata);
 			
             console.log(lat, lon);
 		navigator.geolocation.getCurrentPosition(
@@ -115,7 +120,6 @@ export default class Map extends PureComponent {
   }
 
 		render(){
-	
     return (
       <View style={styles.container}>
 	  
@@ -135,10 +139,11 @@ export default class Map extends PureComponent {
             latitude:Number(this.state.latitude),
             longitude:Number(this.state.longitude)
           }}>
-	
+			
 		  </MapView.Marker>
 		  
       </MapView>
+	 
 	  <View style={styles.bottomView}>
 	  <Text style={styles.textStyle}>{this.state.d} Km </Text>
 	  </View>

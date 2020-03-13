@@ -1,3 +1,6 @@
+//after login
+import { YellowBox } from 'react-native';
+
 import * as WebBrowser from 'expo-web-browser';
 import React,{Component}from 'react';
 import firebase from 'firebase';
@@ -21,6 +24,8 @@ export default class afterLogin extends Component {
 
     constructor(props)
 	{
+		YellowBox.ignoreWarnings(['Setting a timer']);
+
 		super(props);
 		this.state={
 			
@@ -35,6 +40,12 @@ export default class afterLogin extends Component {
     myFunc2= () =>{
         Actions.view();
     }
+    myFunc3= () =>{
+        Actions.start();
+    }
+	myFunc4= () =>{
+        Actions.finish();
+    }
 
 render(){
     return(
@@ -47,6 +58,12 @@ render(){
             </TouchableOpacity>
             <TouchableOpacity style={styles.buton} onPress={this.myFunc2.bind(this)}>
                 <Text style={styles.buttonText}>View Task</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buton} onPress={this.myFunc3.bind(this)}>
+                <Text style={styles.buttonText}>Start Task</Text>
+            </TouchableOpacity>
+			<TouchableOpacity style={styles.buton} onPress={this.myFunc4.bind(this)}>
+                <Text style={styles.buttonText}>Finish Task</Text>
             </TouchableOpacity>
         </View>
     )

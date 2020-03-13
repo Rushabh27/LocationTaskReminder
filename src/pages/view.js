@@ -62,115 +62,41 @@ export default class view extends PureComponent {
         longitude: 0,
 		dist:0,
     listing:[],
-    taskArray:[
-         {
-             latitude:22.2973142,
-	  		 longitude:73.1942567
-         },
-         {
-             latitude:22.8358542,
-             longitude:74.2556784
-         },
-
-      ]
+	task:''
+    
 	}
 
   }
   
 
-  componentDidMount() {
-    
-
-   
+  componentDidMount() {	
         var ref=firebase.database().ref('location');
        // ref.on('value',gotData,errData);
        // var query=ref.orderByChild("em").equalTo(global.em);
-        ref.once('value').then((snapshot)=>{
-         this.setState({listing:snapshot.val()});
-		 console.log(snapshot.val());
-		 console.log("variable");
-		 console.log(this.state.listing[0]);
-		 //snapshot.forEach(function(child){
-              //  console.log(child.key,child.val(),child.val().x,child.val().y);
-               // var lat=child.val().x;
-               // var lon=child.val().y;
-                
-                //const obj = {'latitude':lat, 'longitrude':lon};
-                
-				// this.setState({
-                //   taskArray: [...this.state.task, obj]
-                // });
-                // // 
-              // const newArray = this.state.taskArray.slice(); // Create a copy
-              // newArray.push(obj); // Push the object
-              // this.setState({ taskArray: newArray });
-                // const newFile = this.state.taskArray.map((file) => {
+       ref.once("value",snapshot=>{
+            snapshot.forEach(child=>{
+              this.setState({listing:[...this.state.listing,
+                 {latitude:parseFloat(child.val().latitude),longitude:parseFloat(child.val().longitude)} ]
+              });
+                console.log(child.key,child.val().latitude,child.val().longitude);
+                var lat=parseFloat(child.val().latitude);
+                var lon=parseFloat(child.val().longitude);
+				
+                  this.state.listing.push({
+                    latitude: lat,
+                    longitude: lon
+                  });
+				  this.setState({task:child.val().task});
+                console.log("state valu");
+               console.log(this.state.listing);
 
-                //     return {...file, latitude: lat,longitude:lon};
-                // });
-                // this.setState({taskArray: newFile });
-               // this.setState.taskArray({latitude:lat,longitude:lon})
-               
-        
+        //         // }));
+         });
       
     });
-
-   // var email=AsyncStorage.getItem('name');
-// 	  LocationIQ.init("4e5b5d3f9046aa"); // use a valid API key
-//     var lat,lon;
-// 	//global.dist=0;
-//     const {navigation}=this.props;
-//     var t=JSON.stringify(navigation.getParam('t','NO-TASK'));
-//     //var l=JSON.stringify(navigation.getParam('l','locations'));
-//     //console.log(t);
-//     LocationIQ.search(t)
-//         .then(json => {
-//              lat = json[0].lat;
-//              lon = json[0].lon;
-//              var my = firebase.database().ref('task').push();
-//              var newdata={
-//                em:global.em,
-//                task:t,
-//                x:lat,
-//                y:lon
-
-//              }
-//              my.push(newdata);
-//             console.log(lat, lon);
-// 		navigator.geolocation.getCurrentPosition(
-		
-    // function(position) {
-
-		// var x=geolib.getDistance(position.coords, {
-    //             latitude: lat,
-    //             longitude: lon,
-    //         });
-    //     console.log(x/1000,'km');
-		// global.dist=0;
-		// global.dist=x/1000;
-    
-   
-    // },
-    // () => {
-    //     alert('Position could not be determined.');
-    // },
-// );		
-// 		this.setState({
-// 				latitude:lat,
-// 				longitude:lon
-// 				//dist:dist
-// 				});	
-			
-//         })
-//         .catch(error => console.warn(error));		
+        
   }
   
-
-
-  
-
-
-
 		render(){
 			let d=global.dist;
     return (
@@ -210,9 +136,9 @@ export default class view extends PureComponent {
                 longitudeDelta: 0.6,
               }}>
 
-                {this.state.taskArray.map((coordinate) => {
+                {this.state.listing.map((coordinate) => {
                         return  (<MapView.Marker
-                          onPress={() => alert('task:')}
+                          onPress={() => alert('task:'+this.state.task)}
                           coordinate={coordinate}
                           />)
             })}

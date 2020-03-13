@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import Map from './pages/Map';
 import afterLogin from './pages/afterLogin';
 import view from './pages/view';
+import start from './pages/start';
+import finish from './pages/finish';
 export default class Routes extends Component {
     render(){
         return(
@@ -19,6 +21,8 @@ export default class Routes extends Component {
 					<Scene key="map" component={Map} title="Map"/>
 					<Scene key="afterLogin" component={afterLogin} title="index" initial={true}/>
 					<Scene key="view" component={view} title="VIEW"/>
+					<Scene key="start" component={start} title="START"/>
+					<Scene key="finish" component={finish} title="Finish"/>
 					
 				</Stack>
 			</Router>
