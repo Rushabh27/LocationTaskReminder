@@ -74,7 +74,7 @@ export default class Map extends PureComponent {
     const {navigation}=this.props;
     var t=JSON.stringify(navigation.getParam('t','NO-TASK'));
     var l=JSON.stringify(navigation.getParam('l','locations'));
-    //console.log(t);
+    console.log(t);
     LocationIQ.search(t)
         .then(json => {
           //console.log("Coordinate");
@@ -99,6 +99,7 @@ export default class Map extends PureComponent {
                 latitude: lat,
                 longitude: lon,
             });
+		//console.log(position.coords);
         console.log(x/1000,'km');	
 		global.dist=x/1000;
 		this.setState({d:x/1000});

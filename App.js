@@ -7,94 +7,41 @@ import { Ionicons } from '@expo/vector-icons';
 import firebase from 'firebase';
 import {Component} from 'react';
 import AppNavigator from './navigation/AppNavigator';
-
+import Routes from './src/Routes'
 
 
 import * as WebBrowser from 'expo-web-browser';
-//import React,{Component}from 'react';
-//import firebase from 'firebase';
 
-/*export default class App extends Component {
+export default class App extends Component {
 
 	componentWillMount()
 	{
 			const firebaseConfig = {
-			  apiKey: "AIzaSyDLs_YS5Es3SY9Xmqzk7axHBN-5gi3C_CI",
-			  authDomain: "location-reminder-5f94e.firebaseapp.com",
-			  databaseURL: "https://location-reminder-5f94e.firebaseio.com",
-			  projectId: "location-reminder-5f94e",
-			  storageBucket: "location-reminder-5f94e.appspot.com",
-			  messagingSenderId: "164112422729",
-			  appId: "1:164112422729:web:17cbfa731b20657d1aac98",
-			  measurementId: "G-QPNQ39XLDB"
+			   apiKey: "AIzaSyDR6Q-c96bjsLqABehAL1m13z-QQ28ObB8",
+  authDomain: "locationtaskremainder-74b7a.firebaseapp.com",
+  databaseURL: "https://locationtaskremainder-74b7a.firebaseio.com",
+  projectId: "locationtaskremainder-74b7a",
+  storageBucket: "locationtaskremainder-74b7a.appspot.com",
+  messagingSenderId: "1085289381045",
+  appId: "1:1085289381045:web:f7f769c5b7c9c3529052fc",
+  measurementId: "G-H322S3DYD2"
 			};
+			if(!firebase.apps.length){
 		firebase.initializeApp(firebaseConfig);
-		console.log(firebase);
-		firebase.database().ref('user/001').set({
-			
-			name: 'darshan',
-			age: 20
-		}).then(() => {
-			console.log('inserted !');
-		}).catch((error)=>{
-			console.log(error);
-		});
+			}
 	}
 	
-    render(){
-        return(
-            <View >
-      </View>
-        )
-    }
-}*/
 
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = useState(false);
-	
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
-    );
-  }
+  render(){
+	console.disableYellowBox = true;
+  return (
+    <View style={styles.container}> 
+      <Routes/>
+    </View>  
+  );
+	}
 }
 
-async function loadResourcesAsync() {
-  await Promise.all([
-    Asset.loadAsync([
-      require('./assets/images/robot-dev.png'),
-      require('./assets/images/robot-prod.png'),
-    ]),
-    Font.loadAsync({
-      // This is the font that we are using for our tab bar
-      ...Ionicons.font,
-      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
-      // remove this if you are not using it in your app
-      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-    }),
-  ]);
-}
-
-function handleLoadingError(error) {
-  // In this case, you might want to report the error to your error reporting
-  // service, for example Sentry
-  console.warn(error);
-}
-
-function handleFinishLoading(setLoadingComplete) {
-  setLoadingComplete(true);
-}
 
 const styles = StyleSheet.create({
   container: {

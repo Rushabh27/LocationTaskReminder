@@ -14,26 +14,32 @@ import Logo from '../components/Logo';
 import Form from '../components/Form';
 
 import {Actions} from 'react-native-router-flux';
+import {AsyncStorage} from 'react-native';
 
 export default class Login extends Component {
 	
-	static navigationOptions = {
-    title: 'Home',
- headerStyle: {
-      backgroundColor: '#03A9F4',
-    },
- headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
- 
-  }; 
+	constructor(props){
+		super(props);
+	}
+	
+	static navigationOptions=  {
+   header: null
+}
 	
 	signup(){
 		Actions.signup()
 	}
 	
     render(){
+		AsyncStorage.getItem('name').then(function(res){
+			console.log("em "+res);
+			if(res!=null)
+		{
+		 //this.props.navigation.navigate( "afterLogin" )
+		 Actions.afterLogin();
+		}	 
+	 });
+	 
         return(
             <View style={styles.container}>
                 <Logo/>

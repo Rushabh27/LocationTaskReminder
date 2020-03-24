@@ -14,7 +14,8 @@ import { YellowBox } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
 import Geocoder from 'react-native-geocoding';
-
+import {CirclesLoader, PulseLoader, TextLoader, DotsLoader} from 'react-native-indicator';
+//import AnimatedLoader from "react-native-animated-loader";
 //import { Dropdown } from 'react-native-material-dropdown';
 //import Geolocation from 'react-native-geolocation-service';
 import {
@@ -34,26 +35,27 @@ export default class Finish extends React.Component {
         super(props);
       //  global.items=[];
         this.state={
-			isLoaded:true,
+			isLoaded:false,
 			listing:[],
         }
       }
-       
-	 async componentDidMount(){
-       var items = [];
-     await  firebase.database().ref('location').on('value', snapshot=> {
+     
+	componentDidMount(){
+			var items = [];
+       firebase.database().ref('location').on('value', snapshot=> {
             snapshot.forEach(childSnapshot=> {				
                var childKey = childSnapshot.key;
              var childData = JSON.parse(childSnapshot.val().loc);
               items.push(childData);
 			 
             }) 
-            //console.log("items_load: " + items);
+            console.log("items_load: " + items);
+			this.setState({ listing:[...this.state.listing, ...items ],isLoaded:!this.state.isLoaded})
+
         });
-		await this.setState({ listing:[...this.state.listing, ...items ],isLoaded:false})
-		//console.log("did: ");
-		
+	
     }
+	
      SampleFunction=(item)=>{
 	var ref=firebase.database().ref('location');
     var query=ref.orderByChild("task").equalTo(item);
@@ -67,28 +69,39 @@ export default class Finish extends React.Component {
 		}
 		 })
 	})
-    alert(item);
+    
 	//console.log(query);
- 
+	this.props.navigation.navigate('start',{loc:item});
   }
 
     render(){
-		//console.log("items: " + this.state.listing);
-		if(this.state.isLoaded){
-			return (<View><Text>'Loading..'</Text></View>);
+		
+		console.log("my"+this.state.listing);
+		//console.log(this.state.listing.length);
+		if(this.state.listing.length==0)
+		{
+			return(
+				<View><Text>loading</Text>
+				<CirclesLoader />
+				</View>
+			)
 		}
+		else{
         return(
 		
 			
             <View style={styles.container}>	
 			<Text style={styles.TextS}> SELECT ANY ONE TASK TO REMOVE </Text>
-			 { this.state.listing.map((item, key)=>(
-         <Text key={key} style={styles.TextStyle}  onPress={ this.SampleFunction.bind(this, item) }> { item } </Text>)
-         )}
+			
+				{this.state.listing.map((item, key)=>{
+				return(<Text key={key} style={styles.TextStyle}  onPress={ this.SampleFunction.bind(this, item) }> { item } </Text>)
+				})}
+			
+			
 		</View>
 		
         )
-	
+		}
     }
 }
 

@@ -12,6 +12,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    "notification": {
+      "icon": "./assets/images/logo.png",
+      "color": "#455a64",
+      "androidMode": "default"
+    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -25,6 +30,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }

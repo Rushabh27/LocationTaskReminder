@@ -63,22 +63,19 @@ export default class Home extends React.Component
     this.setState({
       token,
     });
-			
-		 
-		
 		
 		const {task,location}=this.state;
-			if (task === "") {
+			if (task == "") {
 				this.setState(() => ({ nameE: "Task required."}));
 			} else {
 				this.setState(() => ({ nameE: null}));
 			}
-			if (location === "") {
+			if (location == "") {
 				this.setState(() => ({ nameError: "Location required."}));
 			} else {
 				this.setState(() => ({ nameError: null}));
 			}
-			if(task!=''&&location!='')
+			if(task!='' && location!='')
 			{
 				 fetch('https://exp.host/--/api/v2/push/send', {
       body: JSON.stringify({
@@ -107,12 +104,6 @@ export default class Home extends React.Component
  
  render()
  {
-	 AsyncStorage.getItem('name').then(function(res){
-			if(res==null)
-	 {
-		 Actions.login();
-	 }	 
-	 });
 	 
     return(
        <View style = { styles.container }>

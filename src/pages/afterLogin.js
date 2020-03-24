@@ -22,6 +22,10 @@ import {
 
 export default class afterLogin extends Component {
 
+	 static navigationOptions=  {
+   header: null
+}
+	
     constructor(props)
 	{
 		YellowBox.ignoreWarnings(['Setting a timer']);
@@ -46,8 +50,13 @@ export default class afterLogin extends Component {
 	myFunc4= () =>{
         Actions.finish();
     }
+	myFunc5= () =>{
+		AsyncStorage.clear();
+        Actions.login();
+    }
 
 render(){
+	
     return(
         <View style={styles.container}>
         
@@ -65,6 +74,10 @@ render(){
 			<TouchableOpacity style={styles.buton} onPress={this.myFunc4.bind(this)}>
                 <Text style={styles.buttonText}>Finish Task</Text>
             </TouchableOpacity>
+			<TouchableOpacity style={styles.buton} onPress={this.myFunc5.bind(this)}>
+                <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
+        
         </View>
     )
 }

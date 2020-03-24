@@ -80,7 +80,7 @@ export default class Form extends Component {
 			.then(()=>{
 				AsyncStorage.setItem('name', email);
 				alert("Successfully Login");
-				Actions.home();
+				Actions.afterLogin();
 
 			})
 			.catch(()=>{

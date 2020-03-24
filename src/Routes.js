@@ -15,11 +15,11 @@ export default class Routes extends Component {
         return(
             <Router>
 				<Stack key="root">
-					<Scene key="login" component={Login} title="Login" />
-					<Scene key="signup" component={Signup} title="Register"/>
+					<Scene key="login" component={Login} initial={true}/>
+					<Scene key="signup" component={Signup}/>
 					<Scene key="home" component={Home} title="home" />
 					<Scene key="map" component={Map} title="Map"/>
-					<Scene key="afterLogin" component={afterLogin} title="index" initial={true}/>
+					<Scene key="afterLogin" component={afterLogin}  />
 					<Scene key="view" component={view} title="VIEW"/>
 					<Scene key="start" component={start} title="START"/>
 					<Scene key="finish" component={finish} title="Finish"/>

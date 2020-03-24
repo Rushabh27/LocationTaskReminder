@@ -15,7 +15,9 @@ import Form from '../components/Form';
 import {Actions} from 'react-native-router-flux';
 export default class Signup extends Component {
 	
-	
+	static navigationOptions = {
+        header: null
+    }
 	
 	
 	goback(){
@@ -27,7 +29,7 @@ export default class Signup extends Component {
                 <Logo/>
 				<Form type="Signup"/>
 				<View style={styles.signupText}>
-					<Text style={styles.signupText}>Already have an account yet?</Text>
+					<Text style={styles.signupTextt}>Already have an account?</Text>
 					<TouchableOpacity onPress={this.goback}><Text style={styles.signupbutton}>Sign in</Text></TouchableOpacity>
 				</View>
             </View>
