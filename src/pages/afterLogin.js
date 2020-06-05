@@ -1,6 +1,6 @@
 //after login
 import { YellowBox } from 'react-native';
-
+import { withNavigationFocus } from 'react-navigation';
 import * as WebBrowser from 'expo-web-browser';
 import React,{Component}from 'react';
 import firebase from 'firebase';
@@ -9,6 +9,7 @@ import {AsyncStorage} from 'react-native';
 import {
 	Alert,
   Image,
+  BackHandler,
   Platform,
   ScrollView,
   StyleSheet,
@@ -37,6 +38,16 @@ export default class afterLogin extends Component {
           this.myFunc1 = this.myFunc1.bind(this);
           this.myFunc2 = this.myFunc2.bind(this);
 	}
+	
+	componentDidMount() {
+		
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  handleBackButton = () => {
+	if(Actions.currentScene==='afterLogin')  
+	{BackHandler.exitApp()}
+		
+  };
 
     myFunc1= () => {
         Actions.home();
@@ -54,6 +65,10 @@ export default class afterLogin extends Component {
 		AsyncStorage.clear();
         Actions.login();
     }
+	myFunc6= () =>{
+        Actions.edit();
+    }
+
 
 render(){
 	
@@ -65,6 +80,7 @@ render(){
             <TouchableOpacity style={styles.buton} onPress={this.myFunc1.bind(this)}>
                 <Text style={styles.buttonText}>Add Task</Text>
             </TouchableOpacity>
+			
             <TouchableOpacity style={styles.buton} onPress={this.myFunc2.bind(this)}>
                 <Text style={styles.buttonText}>View Task</Text>
             </TouchableOpacity>

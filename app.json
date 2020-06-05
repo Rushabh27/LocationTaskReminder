@@ -4,6 +4,9 @@
     "slug": "Locatio_Reminder",
     "privacy": "public",
     "sdkVersion": "36.0.0",
+	 "android": {
+      "package": "com.sohagfaruque.xxxx"
+    },
     "platforms": [
       "ios",
       "android",

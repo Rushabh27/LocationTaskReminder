@@ -99,30 +99,18 @@ export default class view extends PureComponent {
   
 		render(){
 			let d=global.dist;
+			if(this.state.listing.length==0)
+			{
+				return(	<View style={styles.container}><Text>NO TASK AVAILABLE</Text>
+				
+				</View>
+				)
+			}
+			else{
     return (
       <View style={styles.container}>
 
-	  {/* <MapView style={styles.map}
-			zoomEnabled={true}
-            showsUserLocation={true}
-			followUserLocation = { true }
-          initialRegion={{
-            latitude:Number(this.state.latitude),
-            longitude:Number(this.state.longitude),
-            latitudeDelta:150,
-            longitudeDelta:150
-          }}>
-		  
-		  <MapView.Marker
-          coordinate={{
-            latitude:Number(this.state.latitude),
-            longitude:Number(this.state.longitude)
-          }}></MapView.Marker>
-		  
-      </MapView>
-	  <View style={styles.bottomView}>
-	 {/* <Text style={styles.txtStyle}>{d}</Text>
-      */}
+	  
        <MapView
               style={{ position: 'absolute',
               top: 0,
@@ -132,8 +120,8 @@ export default class view extends PureComponent {
               initialRegion={{
                 latitude: 22.2587,
                 longitude: 71.1924,
-                latitudeDelta: 0.6,
-                longitudeDelta: 0.6,
+                latitudeDelta: 5.6,
+                longitudeDelta: 5.6,
               }}>
 
                 {this.state.listing.map((coordinate) => {
@@ -147,5 +135,6 @@ export default class view extends PureComponent {
 	
 	  </View>
     );
+			}
   }
 }

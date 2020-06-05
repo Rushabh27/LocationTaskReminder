@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Logo from '../components/Logo';
 import Form from '../components/Form';
-
+import {BackHandler} from 'react-native'
 import {Actions} from 'react-native-router-flux';
 import {AsyncStorage} from 'react-native';
 
@@ -26,18 +26,27 @@ export default class Login extends Component {
    header: null
 }
 	
+	componentDidMount() {
+		
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  handleBackButton = () => {
+	if(Actions.currentScene==='login')  
+	{BackHandler.exitApp()}
+		
+  };
+
 	signup(){
 		Actions.signup()
 	}
 	
     render(){
-		AsyncStorage.getItem('name').then(function(res){
+			AsyncStorage.getItem('name').then(function(res){
 			console.log("em "+res);
 			if(res!=null)
-		{
-		 //this.props.navigation.navigate( "afterLogin" )
-		 Actions.afterLogin();
-		}	 
+			{
+				Actions.afterLogin();
+			}
 	 });
 	 
         return(

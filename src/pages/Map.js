@@ -4,6 +4,8 @@ import MapView from 'react-native-maps';
 import Marker from 'react-native-maps';
 import LocationIQ from 'react-native-locationiq';
 import Geolocation from 'react-native-geolocation-service';
+//import Polyline from '@mapbox/polyline';
+
 //import Geocoder from 'react-native-geocoder';
 import * as geolib from 'geolib';
 //import PolylineDirection from '@react-native-maps/polyline-direction';
@@ -67,7 +69,7 @@ export default class Map extends PureComponent {
   
  
   componentDidMount() {
- 
+	
 	  LocationIQ.init("4e5b5d3f9046aa"); // use a valid API key
     var lat,lon;
 	//global.dist=0;
@@ -107,7 +109,11 @@ export default class Map extends PureComponent {
     () => {
         alert('Position could not be determined.');
     },
-);		
+);
+
+	
+
+		
 		this.setState({
 				latitude:lat,
 				longitude:lon

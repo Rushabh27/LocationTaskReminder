@@ -206,7 +206,7 @@ export default class Start extends PureComponent {
       },
       method: 'POST',
     });
-	//Actions.home();
+	Actions.afterLogin();
 	}
 	
 	

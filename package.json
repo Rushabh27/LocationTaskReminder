@@ -14,6 +14,7 @@
   "dependencies": {
     "@expo/samples": "~36.0.0",
     "@expo/vector-icons": "~10.0.0",
+    "@mapbox/polyline": "^1.1.0",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-maps/polyline-direction": "^1.0.0",

@@ -10,6 +10,7 @@ import afterLogin from './pages/afterLogin';
 import view from './pages/view';
 import start from './pages/start';
 import finish from './pages/finish';
+import edit from './pages/edit';
 export default class Routes extends Component {
     render(){
         return(
@@ -23,6 +24,7 @@ export default class Routes extends Component {
 					<Scene key="view" component={view} title="VIEW"/>
 					<Scene key="start" component={start} title="START"/>
 					<Scene key="finish" component={finish} title="Finish"/>
+					<Scene key="edit" component={edit} title="Edit"/>
 					
 				</Stack>
 			</Router>
